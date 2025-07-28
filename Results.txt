@@ -1,0 +1,8 @@
+Image: 4000x2250 Pixel
+simple Dilatation, mask = 25
+
+O(n2) on cpu: 26,25 minutes =1575,04 seconds
+
+on GPU with 32x32 blocks  = 0.45171 seconds
+
+-> 3486,86 times faster on gpu
