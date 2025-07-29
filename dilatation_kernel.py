@@ -20,8 +20,3 @@ def dilatation_kernel(image, result_Img, mask = 3):
                 if(current > brightest):
                     brightest = current        
         result_Img[x,y] = brightest # since the image and the result_img matrix have the same size, the corresponding pixel representation matches
-
-
-
-    x,y = cuda.grid(2)
-    result_Img[x,y] = image[x,y] # example: copy image
