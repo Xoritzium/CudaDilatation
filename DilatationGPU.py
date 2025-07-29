@@ -16,6 +16,7 @@ class DilatationGPU:
     output = "iteration,width,height,time\n"
     avg_solve_time = 0
     counter =0
+
     def __init__(self):
         self.load_images("./images")
 
@@ -46,12 +47,6 @@ class DilatationGPU:
 
         blockDimensions = (block_dimensions,block_dimensions)  # mmx threads in a block: 1024 or (32x32)
         gridDimensions = (self.grey_image_array.shape[0] // blockDimensions[0] +1, self.grey_image_array.shape[1] // blockDimensions[1] + 1)
-       # print(f"greyImage.shape[0] = {self.grey_image_array.shape[0]}")
-        #print(f"greyImage.shape[1] = {self.grey_image_array.shape[1]}")
-        #print(f"blockDimensions[0] = {blockDimensions[0]}")
-        #print(f"blockDimensions[1] = {blockDimensions[1]}")
-
-
 
         # actual calculation on decive (used: nvidia GForce 2070) 
         start = time.time()
@@ -59,16 +54,9 @@ class DilatationGPU:
         end = time.time() - start
 
         final_result = g_result.copy_to_host() # reallocate the result back to the Host (cpu)
-      #  self.show_image(self.original_image, "Original")
-       # self.show_image(final_result, "Dilatation")
-       # print(f"solving with GPU (specs: blockDim: {blockDimensions}, gridDim: {gridDimensions}) took: {end} seconds" )
-       # self.output += f"iteration: {iteration}, solved: {self.grey_image_array.shape[0]}x{self.grey_image_array.shape[1]} image took: {end} seconds\n"
         self.output += f"{iteration},{self.grey_image_array.shape[0]},{self.grey_image_array.shape[1]}, {end} \n"
         cuda.current_context().deallocations.clear() # clear gpu memory
         
-        deviceProperties = cuda.get_current_device()
-       # print("device Properties:")
-        #print(deviceProperties)
 
     def load_images(self,directory):
         #print(f"loading files from {directory}")

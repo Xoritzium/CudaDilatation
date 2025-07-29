@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageOps
 import numpy as np
 import time
-
+import numba
 class DilatationCPU:
 
     original_image =None
@@ -11,10 +11,12 @@ class DilatationCPU:
 
     def __init__(self):
         # setup image        
-        self.original_image = Image.open("wood.jpg")
+        self.original_image = Image.open("./images/wood.jpg")
         grey_image = ImageOps.grayscale(self.original_image)
         self.grey_image_array = np.asarray(grey_image)
         
+
+    @numba.jit(nopython=True)
     def dilatation (self, image, mask= 3):
         image_rows, image_cols = image.shape
         result = np.zeros([image_rows,image_cols])
@@ -43,7 +45,6 @@ class DilatationCPU:
         plt.imshow(image, cmap="grey")
         plt.title(title)
         plt.show()
-    
     def run_calculation(self, mask):
         """
         Runs actual calculation with the given mask
