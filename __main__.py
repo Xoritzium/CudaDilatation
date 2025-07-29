@@ -14,7 +14,7 @@ class Main:
         if args.g:
             print("starting to apply the dilatation on gpu")
             d_gpu = DilatationGPU()
-            # d_gpu.run_calculation(args.mask)
+            d_gpu.run_calculation(args.mask)
         elif args.c:
             print("starting to apply the dilatation on cpu")
             d_cpu= DilatationCPU()
